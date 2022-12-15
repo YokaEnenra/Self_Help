@@ -20,7 +20,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from Self_Help.views import TestModelView
+from Self_Help.views import TestModelView, HomePage, StandardPage, verify_account, SignUp
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -36,17 +36,23 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    # swagger
+
+] + i18n_patterns(
+# swagger
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0),name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     # admin controls
     path('admin/', admin.site.urls),
     #
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
 
-] + i18n_patterns(
     path('i18n/', include('django.conf.urls.i18n')),
     path('testview/', TestModelView.as_view()),
+    path('home/', HomePage.as_view(), name='home'),
+    path('', StandardPage.as_view()),
+    path('signup/<str:short_error_message>/<str:error_message>', SignUp.as_view(), name='signup_with_error'),
+    path('signup/', SignUp.as_view(), name='sign_up'),
+    path('verify/<str:uid>/<str:token>', verify_account, name='verify_account'),
     prefix_default_language=False,
 )

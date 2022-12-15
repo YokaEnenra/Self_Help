@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %} {% trans 'Self help project' %} {% endblock %}
+
+{% block content %}
+    <h1>{% trans 'Welcome to the Self help project!' %}</h1>
+    <h3>{% trans 'It will help you with self development' %}</h3>
+    <p>{% trans 'Please register if you want to continue' %}</p>
+    <a href="{% url 'sign_up' %}" class="button button-border">{% trans 'Sign up' %}</a>
+{% endblock %}
+
+{% block down %}{% endblock %}

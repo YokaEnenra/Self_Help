@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %} {% trans 'Register Page' %} {% endblock %}
+
+{% block content %}
+    <form action="{% url 'sign_up'  %}" method="POST">
+    {% csrf_token %}
+        {% trans 'Username' %}:<input type ="text" name="username" required>
+        {% trans 'Email' %}:<input type ="email" name="email" required>
+        {% trans 'Password' %}:<input type ="password" id="password" name="password" required>
+        <input type ="submit" value="{% trans 'SignUp' %}">
+    </form>
+    <p>{% if error_message is not None and short_error_message is not None %}{{ error_message }}{% endif %}</p>
+{% endblock %}
