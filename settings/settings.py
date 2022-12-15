@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'Self_Help',
     #
     'rest_framework',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
