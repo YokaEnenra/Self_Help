@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib import admin
 from Self_Help.models import TestModel, ErrorMessages, InfoMessages
 from modeltranslation.admin import TranslationAdmin
 

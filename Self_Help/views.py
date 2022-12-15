@@ -12,6 +12,8 @@ from Self_Help.email import send
 from Self_Help.models import TestModel, ErrorMessages, InfoMessages
 
 USER_MODEL = get_user_model()
+
+
 # Create your views here.
 class TestModelView(ListView):
     model = TestModel
@@ -33,6 +35,7 @@ class SignUp(View):
         return render(request, "signup.html", context={
             'error_message': error_message,
             'short_error_message': short_error_message})
+
     def post(self, request):
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -74,4 +77,3 @@ def verify_account(request, uid, token):
         return HttpResponse(f"{InfoMessages.objects.get(name='hi').full_text} {user.username}!\n"
                             f"{InfoMessages.objects.get(name='acc_activated').full_text}")
     return HttpResponse(ErrorMessages.objects.get(name='inv_token').full_text)
-
