@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %} {% trans 'Verification email' %} {% endblock %}
+
+{% block content %}
+    <h1>{{ subject }}</h1>
+    <p>{% trans 'Click following link, to activate your account' %}.<br>
+        {{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ link }}</p>
+{% endblock %}

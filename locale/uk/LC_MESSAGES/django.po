@@ -1,0 +1,116 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-15 19:08+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
+"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
+"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
+"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#: .\Self_Help\models.py:7
+msgid "tast"
+msgstr "таст"
+
+#: .\Self_Help\models.py:8
+msgid "test"
+msgstr "тест"
+
+#: .\Self_Help\models.py:9
+msgid "tust"
+msgstr "туст"
+
+#: .\Self_Help\models.py:16
+msgid "error`s short name"
+msgstr "коротка назва помилки(англійською)"
+
+#: .\Self_Help\models.py:17
+msgid "error`s full text"
+msgstr "розгорнуте пояснення помилки"
+
+#: .\Self_Help\models.py:21
+#, fuzzy
+#| msgid "error`s short name"
+msgid "message`s short name"
+msgstr "коротка назва повідомлення(англійською)"
+
+#: .\Self_Help\models.py:22
+#, fuzzy
+#| msgid "error`s full text"
+msgid "message`s full text"
+msgstr "розгорнуте повідомлення"
+
+#: .\settings\settings.py:134
+msgid "Ukrainian"
+msgstr "Українська"
+
+#: .\settings\settings.py:135
+msgid "English"
+msgstr "Англійська"
+
+#: .\templates\base.html:74
+msgid "Glory to Ukraine!"
+msgstr "Слава Україні!"
+
+#: .\templates\homepage.html:3
+msgid "Self help project"
+msgstr "Проект Самодопомога"
+
+#: .\templates\homepage.html:6
+msgid "Welcome to the Self help project!"
+msgstr "Вітаємо вас на проекті самодопомога"
+
+#: .\templates\homepage.html:7
+msgid "It will help you with self development"
+msgstr "Він допоможе вам із саморозвитком"
+
+#: .\templates\homepage.html:8
+msgid "Please register if you want to continue"
+msgstr "Будь-ласка зареєструйтесь, якщо хочете продовжити"
+
+#: .\templates\homepage.html:9
+msgid "Sign up"
+msgstr "Зареєструватись"
+
+#: .\templates\signup.html:8
+msgid "Username"
+msgstr "Ім'я користувача"
+
+#: .\templates\signup.html:9
+msgid "Email"
+msgstr "Електронна поштова скринька"
+
+#: .\templates\signup.html:10
+msgid "Password"
+msgstr "Пароль"
+
+#: .\templates\signup.html:11
+#, fuzzy
+#| msgid "Sign up"
+msgid "SignUp"
+msgstr "Зареєструватись"
+
+#: .\templates\test.html:3
+msgid "Students Page"
+msgstr "Сторінка з студентами"
+
+#: .\templates\verification_email.html:3
+msgid "Verification email"
+msgstr "Активаційне письмо"
+
+#: .\templates\verification_email.html:7
+msgid "Click following link, to activate your account"
+msgstr "Натисніть по наступному посиланню, щоб активувати ваш аккаунт"
