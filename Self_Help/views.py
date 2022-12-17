@@ -7,7 +7,6 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from django.views.generic import ListView
-from rest_framework import permissions
 
 from Self_Help.email import send
 from Self_Help.models import TestModel, ErrorMessages, InfoMessages
