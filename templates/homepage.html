@@ -5,8 +5,9 @@
 {% block content %}
     <h1>{% trans 'Welcome to the Self help project!' %}</h1>
     <h3>{% trans 'It will help you with self development' %}</h3>
-    <p>{% trans 'Please register if you want to continue' %}</p>
-    <a href="{% url 'sign_up' %}" class="button button-border">{% trans 'Sign up' %}</a>
+    <p>{% trans 'Please register if you want to continue.' %} {% trans ' Or sign in if you have an account' %}</p>
+    <a href="{% url 'sign_up' %}" class="button button-sign-up">{% trans 'Sign up' %}</a>
+    <a href="{% url 'sign_in' %}" class="button button-sign-in">{% trans 'Sign in' %}</a>
 {% endblock %}
 
 {% block down %}{% endblock %}

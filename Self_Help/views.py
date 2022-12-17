@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model, login, authenticate, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -7,6 +7,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from django.views.generic import ListView
+from rest_framework import permissions
 
 from Self_Help.email import send
 from Self_Help.models import TestModel, ErrorMessages, InfoMessages
@@ -27,13 +28,18 @@ class StandardPage(View):
 
 class HomePage(View):
     def get(self, request):
+        if request.user.is_authenticated:
+            username = request.user.username
+            return render(request, 'signin_home.html', context={
+                'username': username,
+            })
         return render(request, 'homepage.html')
 
 
 class SignUp(View):
-    def get(self, request, error_message=None, short_error_message=None):
+    def get(self, request, short_error_message=None):
         return render(request, "signup.html", context={
-            'error_message': error_message,
+            'error_message': request.session.get('error_message'),
             'short_error_message': short_error_message})
 
     def post(self, request):
@@ -41,13 +47,15 @@ class SignUp(View):
         email = request.POST.get('email')
         password = request.POST.get('password')
         if USER_MODEL.objects.filter(username=username).exists():
-            return redirect(reverse_lazy('signup_with_error', kwargs={
-                'error_message': ErrorMessages.objects.get(name='wrong_username').full_text,
-                'short_error_message': ErrorMessages.objects.get(name='wrong_username').name}))
+            request.session['error_message'] = ErrorMessages.objects.get(name='wrong_username').full_text
+            return redirect(reverse_lazy(
+                'sign_up_with_error',
+                kwargs={'short_error_message': ErrorMessages.objects.get(name='wrong_username').name}))
         if USER_MODEL.objects.filter(email=email).exists():
-            return redirect(reverse_lazy('signup_with_error', kwargs={
-                'error_message': ErrorMessages.objects.get(name='wrong_email').full_text,
-                'short_error_message': ErrorMessages.objects.get(name='wrong_email').name}))
+            request.session['error_message'] = ErrorMessages.objects.get(name='wrong_email').full_text
+            return redirect(reverse_lazy(
+                'sign_up_with_error',
+                kwargs={'short_error_message': ErrorMessages.objects.get(name='wrong_email').name}))
         user = USER_MODEL.objects.create_user(
             username=username,
             email=email,
@@ -77,3 +85,34 @@ def verify_account(request, uid, token):
         return HttpResponse(f"{InfoMessages.objects.get(name='hi').full_text} {user.username}!\n"
                             f"{InfoMessages.objects.get(name='acc_activated').full_text}")
     return HttpResponse(ErrorMessages.objects.get(name='inv_token').full_text)
+
+
+class SignIn(View):
+    def get(self, request, short_error_message=None):
+        return render(request, "signin.html", context={
+            'error_message': request.session.get('error_message'),
+            'short_error_message': short_error_message})
+
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_active:
+            login(request, user)
+            return redirect(reverse_lazy('home'))
+        elif not user.is_active:
+            request.session['error_message'] = ErrorMessages.objects.get(name='acc_not_activ').full_text
+            return redirect(reverse_lazy(
+                'sign_in_with_error',
+                kwargs={'short_error_message': ErrorMessages.objects.get(name='acc_not_activ').name}))
+        else:
+            request.session['error_message'] = ErrorMessages.objects.get(name='wrong_signin').full_text
+            return redirect(reverse_lazy(
+                'sign_in_with_error',
+                kwargs={'short_error_message': ErrorMessages.objects.get(name='wrong_signin').name}))
+
+
+class SignOut(View):
+    def get(self, request):
+        logout(request)
+        return redirect(reverse_lazy('home'))
