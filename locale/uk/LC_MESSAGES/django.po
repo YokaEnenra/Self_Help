@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 19:08+0200\n"
+"POT-Creation-Date: 2022-12-17 20:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,96 +21,139 @@ msgstr ""
 "100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
 "(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
-#: .\Self_Help\models.py:7
+#: .\Self_Help\models.py:10
 msgid "tast"
 msgstr "таст"
 
-#: .\Self_Help\models.py:8
+#: .\Self_Help\models.py:11
 msgid "test"
 msgstr "тест"
 
-#: .\Self_Help\models.py:9
+#: .\Self_Help\models.py:12
 msgid "tust"
 msgstr "туст"
 
-#: .\Self_Help\models.py:16
+#: .\Self_Help\models.py:19
 msgid "error`s short name"
 msgstr "коротка назва помилки(англійською)"
 
-#: .\Self_Help\models.py:17
+#: .\Self_Help\models.py:20
 msgid "error`s full text"
-msgstr "розгорнуте пояснення помилки"
+msgstr "повний опис помилки"
 
-#: .\Self_Help\models.py:21
-#, fuzzy
-#| msgid "error`s short name"
+#: .\Self_Help\models.py:24
 msgid "message`s short name"
 msgstr "коротка назва повідомлення(англійською)"
 
-#: .\Self_Help\models.py:22
-#, fuzzy
-#| msgid "error`s full text"
+#: .\Self_Help\models.py:25
 msgid "message`s full text"
-msgstr "розгорнуте повідомлення"
+msgstr "повний зміст повідомлення"
 
-#: .\settings\settings.py:134
+#: .\settings\settings.py:135
 msgid "Ukrainian"
 msgstr "Українська"
 
-#: .\settings\settings.py:135
+#: .\settings\settings.py:136
 msgid "English"
 msgstr "Англійська"
 
-#: .\templates\base.html:74
+#: .\templates\base.html:98
 msgid "Glory to Ukraine!"
 msgstr "Слава Україні!"
 
-#: .\templates\homepage.html:3
+#: .\templates\homepage.html:3 .\templates\projects.html:3
+#: .\templates\signin_home.html:3
 msgid "Self help project"
-msgstr "Проект Самодопомога"
+msgstr "Проект само допомога"
 
-#: .\templates\homepage.html:6
+#: .\templates\homepage.html:6 .\templates\signin_home.html:6
 msgid "Welcome to the Self help project!"
-msgstr "Вітаємо вас на проекті самодопомога"
+msgstr "Ласкаво просимо на проекті самодопомога"
 
-#: .\templates\homepage.html:7
+#: .\templates\homepage.html:7 .\templates\signin_home.html:7
 msgid "It will help you with self development"
-msgstr "Він допоможе вам із саморозвитком"
+msgstr "Він допоможе вам з саморозвитком"
 
 #: .\templates\homepage.html:8
-msgid "Please register if you want to continue"
-msgstr "Будь-ласка зареєструйтесь, якщо хочете продовжити"
+msgid "Please register if you want to continue."
+msgstr "Будь-ласка зареєструйтесь, якщо хочете продовжити."
+
+#: .\templates\homepage.html:8
+msgid " Or sign in if you have an account"
+msgstr " Або увійдіть в акаунт, якщо ви зареєстровані"
 
 #: .\templates\homepage.html:9
 msgid "Sign up"
-msgstr "Зареєструватись"
+msgstr "Реєстрація"
 
-#: .\templates\signup.html:8
+#: .\templates\homepage.html:10
+msgid "Sign in"
+msgstr "Увійти"
+
+#: .\templates\projects.html:13
+msgid "Add project"
+msgstr "Додати проект"
+
+#: .\templates\signin.html:3
+msgid "SignIn Page"
+msgstr "Сторінка входу"
+
+#: .\templates\signin.html:8 .\templates\signup.html:8
 msgid "Username"
 msgstr "Ім'я користувача"
 
-#: .\templates\signup.html:9
-msgid "Email"
-msgstr "Електронна поштова скринька"
-
-#: .\templates\signup.html:10
+#: .\templates\signin.html:9 .\templates\signup.html:10
 msgid "Password"
 msgstr "Пароль"
 
-#: .\templates\signup.html:11
+#: .\templates\signin.html:10
+#, fuzzy
+#| msgid "Sign in"
+msgid "SignIn"
+msgstr "Увійти"
+
+#: .\templates\signin_home.html:8
+msgid ""
+"Since you are registered, you now have full access to the project`s "
+"capabilities."
+msgstr ""
+"Так як ви зареєстровані, ви тепер маєте повний доступ для можливостей "
+"проекту."
+
+#: .\templates\signin_home.html:9
+msgid "Try to create your first self-development project"
+msgstr "Спробуйте створити свій перший проект по саморозвитку"
+
+#: .\templates\signin_home.html:10
+msgid "To Projects"
+msgstr "Перейти до проектів"
+
+#: .\templates\signin_home.html:11
 #, fuzzy
 #| msgid "Sign up"
+msgid "Sign out"
+msgstr "Реєстрація"
+
+#: .\templates\signup.html:3
+msgid "SignUp Page"
+msgstr "Сторінка реєстрації"
+
+#: .\templates\signup.html:9
+msgid "Email"
+msgstr "Пошта"
+
+#: .\templates\signup.html:11
 msgid "SignUp"
-msgstr "Зареєструватись"
+msgstr "Реєстрація"
 
 #: .\templates\test.html:3
 msgid "Students Page"
-msgstr "Сторінка з студентами"
+msgstr "Сторінка із студентами"
 
 #: .\templates\verification_email.html:3
 msgid "Verification email"
-msgstr "Активаційне письмо"
+msgstr "Підтвердження пошти"
 
 #: .\templates\verification_email.html:7
 msgid "Click following link, to activate your account"
-msgstr "Натисніть по наступному посиланню, щоб активувати ваш аккаунт"
+msgstr "Натисніть по наступному посилання, щоб активувати акаунт"

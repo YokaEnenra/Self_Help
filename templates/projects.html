@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %} {% trans 'Self help project' %} {% endblock %}
+
+{% block content %}
+    <ul class="no-style">
+        {% for project in projects %}
+            <li>
+                <a href="{% url 'project_detail' pk=project.id%}" class="button button-to-project">{{ project.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="#" class="button button-new-project">{% trans 'Add project' %}</a>
+{% endblock %}
+
+{% block down %}{% endblock %}

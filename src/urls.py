@@ -20,7 +20,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from Self_Help.views import TestModelView, HomePage, StandardPage, verify_account, SignUp
+from Self_Help.views import TestModelView, HomePage, StandardPage, verify_account, SignUp, SignIn, SignOut
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -51,8 +51,11 @@ urlpatterns = [
     path('testview/', TestModelView.as_view()),
     path('home/', HomePage.as_view(), name='home'),
     path('', StandardPage.as_view()),
-    path('signup/<str:short_error_message>/<str:error_message>', SignUp.as_view(), name='signup_with_error'),
     path('signup/', SignUp.as_view(), name='sign_up'),
+    path('signup/<str:short_error_message>', SignUp.as_view(), name='sign_up_with_error'),
     path('verify/<str:uid>/<str:token>', verify_account, name='verify_account'),
+    path('signin', SignIn.as_view(), name='sign_in'),
+    path('signin/<str:short_error_message>', SignIn.as_view(), name='sign_in_with_error'),
+    path('signout/', SignOut.as_view(), name='sign_out'),
     prefix_default_language=False,
 )
