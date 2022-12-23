@@ -1,0 +1,57 @@
+{% load i18n %}
+{% load static %}
+{% load widget_tweaks %}
+
+<div id="click_create_note_modal" style="display:none;">
+    <form id="click_create_note_confirm" action="{% url 'new_note_form' %}" method="POST">
+        <p>{% trans 'Create new note for ' %}{{ project.title }}{% trans ' project' %}</p>
+        {% csrf_token %}
+        <div class="click-create-note-label">
+            {% trans 'Note Title' %}</div>
+        {% render_field form_new_note.note_title class="form_field" %}
+        <div class="click-create-note-text">
+            {% trans 'Note Text(optional can be defined later or never)' %}</div>
+        {% render_field form_new_note.note_text class="form_field" rows="15" cols="60" %}
+        <div class="click-create-note-vid-url">
+            {% trans 'Note YouTube Video URL(optional can be defined later or never)' %}</div>
+        {% render_field form_new_note.vid_url class="form_field" %}
+
+    </form>
+    <div id="message-for-note" class="success_message"></div>
+</div>
+
+<div id="click_delete_project_modal" style="display:none;">
+    <form id="click_delete_project_confirm" method="POST" action="{% url 'delete_project' %}">
+        {% csrf_token %}
+        <p>{% trans 'Are you sure you want to delete ' %}{{ project.title }}{% trans ' project' %}?</p>
+    </form>
+    <div id="message-for-note" class="success_message"></div>
+</div>
+
+<div id="click_edit_project_modal" style="display:none;">
+    <form id="click_edit_project_confirm" method="POST" action="{% url 'edit_project' %}">
+        {% csrf_token %}
+        <p>{% trans 'Select new title for ' %}{{ project.title }}{% trans ' project' %}</p>
+        {% render_field form_project.new_project_title class="form_field" value=project.title %}
+    </form>
+    <div id="message-for-edit-prj" class="success_message"></div>
+</div>
+
+<div id="click_delete_note_modal" style="display:none;">
+    <form id="click_create_note_confirm" method="POST" action="{% url 'delete_project' %}">
+        {% csrf_token %}
+        <p>{% trans 'Are you sure you want to delete ' %}{{ current_note.title }}{% trans ' note' %}?</p>
+    </form>
+    <div id="message-for-note" class="success_message"></div>
+</div>
+
+
+<div id="click_create_project_modal" style="display:none;">
+    <form id="click_create_project_confirm" action="{% url 'new_project_form' %}" method="POST">
+        <p>{% trans 'Choose Title for new project' %}</p>
+        {% csrf_token %}
+        <div class="click-create-project-label">{% trans 'Project Title' %}</div>
+        {% render_field form.project_title class="form_field" %}
+    </form>
+    <div id="message-for-project" class="success_message"></div>
+</div>

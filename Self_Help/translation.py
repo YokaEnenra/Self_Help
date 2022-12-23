@@ -1,10 +1,5 @@
 from modeltranslation.translator import register, TranslationOptions
-from Self_Help.models import TestModel, ErrorMessages, InfoMessages
-
-
-@register(TestModel)
-class TestModelTranslationOptions(TranslationOptions):
-    fields = ('tast', 'tust')
+from Self_Help.models import ErrorMessages, InfoMessages
 
 
 @register(ErrorMessages)

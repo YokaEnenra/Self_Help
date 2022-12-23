@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %} {% trans 'Self help project' %} {% endblock %}
+{% block title %} {% trans 'Self Help Project' %} {% endblock %}
 
 {% block content %}
-    <h1>{{ username }}. {% trans 'Welcome to the Self help project!' %}</h1>
-    <h3>{% trans 'It will help you with self development' %}</h3>
-    <p>{% trans 'Since you are registered, you now have full access to the project`s capabilities.' %}
-        {% trans 'Try to create your first self-development project' %}</p>
-    <a href="#" class="button button-to-project"> {% trans 'To Projects' %}</a>
-    <a href="{% url 'sign_out' %}" class="button button-sign-out">{% trans 'Sign out' %}</a>
-    {% endblock %}
+    <div class="body-container-column">
+        <h1>{{ username }}. {% trans 'Welcome to the Self Help Project!' %}</h1>
+        <h3>{% trans 'It will help you with self development' %}</h3>
+        <p>{% trans 'Since you are registered, you now have full access to the project`s capabilities.' %}
+            {% trans 'Try to create your first self development project' %}</p>
+        <a href="{% url 'projects' %}" class="custom-button button-to-project"> {% trans 'To Projects' %}</a>
+        <a href="{% url 'sign_out' %}" class="custom-button button-sign-out">{% trans 'Sign out' %}</a>
+    </div>
+{% endblock %}
 
 {% block down %}{% endblock %}

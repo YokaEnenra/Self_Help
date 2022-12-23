@@ -2,101 +2,42 @@
 <html>
 <head>
     {% load i18n %}
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-
-        input[type=submit] {
-            padding: 15px 32px;
-            background: white;
-            border: 2px solid blue;
-            cursor: pointer;
-            color: black;
-            border-radius: 5px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-        }
-
-        ul.no-style{
-            list-style-type: none;
-        }
-
-        .button {
-            background-color: white;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .button-sign-up {
-            color: black;
-            border: 2px solid blue;
-        }
-
-        .button-sign-in {
-            color: black;
-            border: 2px solid green;
-        }
-
-        .button-sign-out {
-            color: black;
-            border: 2px solid red;
-        }
-
-        .button-to-project {
-            color: black;
-            border: 2px solid yellow;
-        }
-
-        .button-new-project {
-            color: black;
-            border: 2px solid purple;
-        }
-
-        .wrapper {
-            padding: 10px;
-            margin-bottom: 1vh;
-            border: 3px solid black;
-            height: 95vh;
-        }
-
-        .footer-container {
-            margin-left: 5px;
-            margin-right: 5px;
-            padding: 15px 32px;
-            border: 5px solid yellow;
-            flex: 0 0 auto;
-        }
-
-        .body-container {
-            margin: 5px;
-            border: 5px solid red;
-            height: 70vh;
-            padding: 10px;
-            flex: 1 0 auto;
-        }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
+          integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body class="wrapper">
-<div class="body-container"> {% block content %}{% endblock %}</div>
+{% block content %}{% endblock %}
 <footer class="footer-container">
     {% block down %}{% endblock %}
     {% trans 'Glory to Ukraine!' %}
+    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+        <input name="next" type="hidden" value="{{ redirect_to }}">
+        <select name="language">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            {% for language in languages %}
+                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                    {{ language.name_local }} ({{ language.code }})
+                </option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="{% trans 'Switch language' %}">
+    </form>
 </footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"
+        integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+
+{% include 'js_scrypt.html' %}
+{% include 'popups.html' %}
 </body>
 
 </div>
