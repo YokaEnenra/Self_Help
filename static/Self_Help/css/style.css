@@ -1,0 +1,230 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type=submit] {
+    padding: 15px 32px;
+    background: white;
+    border: 2px solid blue;
+    cursor: pointer;
+    color: black;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+}
+
+ul.no-style {
+    list-style-type: none;
+    margin-left: -2vw;
+}
+
+.custom-button {
+    background-color: white;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: auto;
+    max-width: 10vw;
+}
+
+.button-sign-up {
+    color: black;
+    border: 2px solid blue;
+}
+
+.button-sign-in {
+    color: black;
+    border: 2px solid green;
+}
+
+.button-sign-out {
+    color: black;
+    border: 2px solid red;
+}
+
+.button-to-project {
+    color: black;
+    border: 2px solid yellow;
+}
+
+.button-project-not-ready {
+    color: black;
+    border: 2px solid yellow;
+}
+
+.button-project-ready {
+    color: black;
+    border: 2px solid green;
+}
+
+.button-new-project {
+    color: black;
+    border: 2px solid purple;
+}
+
+.button-edit-project {
+    color: black;
+    border: 2px solid black;
+}
+
+.button-new-note {
+    color: black;
+    border: 2px solid teal;
+}
+
+.button-delete-project {
+    color: black;
+    border: 2px solid red;
+}
+
+.button-play-video {
+    color: black;
+    border: 2px solid aquamarine;
+    margin-bottom: 1vh;
+}
+
+.button-go-home {
+    color: black;
+    border: 2px solid peachpuff;
+}
+
+.button-go-projects {
+    color: black;
+    border: 2px solid peachpuff;
+}
+
+.button-mark-ready {
+    color: black;
+    border: 2px solid green;
+}
+
+.button-mark-not-ready {
+    color: black;
+    border: 2px solid red;
+}
+
+.button-switch_language {
+    color: black;
+    border: 2px solid red;
+}
+
+.wrapper {
+    padding: 10px;
+    margin-bottom: 1vh;
+    border: 3px solid black;
+    height: 95vh;
+}
+
+.footer-container {
+    margin-left: 1vh;
+    margin-right: 1vh;
+    padding: 15px 32px;
+    border: 5px solid yellow;
+    flex: 0 0 auto;
+}
+
+.body-container-column {
+    margin: 1vh;
+    border: 5px solid red;
+    height: 70vh;
+    padding: 10px;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.body-container-row {
+    margin: 1vh;
+    border: 5px solid red;
+    height: 70vh;
+    padding: 10px;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.project-details-container {
+    margin: 1vh 1vh 1vh;
+    border: 5px solid tan;
+    padding: 10px;
+    width: 12vw;
+    flex: 0 0 auto;
+}
+
+.no-scroll {
+    overflow-y: hidden;
+}
+
+.click {
+}
+
+.projects-list {
+    flex: 0 0 auto;
+    overflow: auto;
+    border: 5px solid darkorange;
+    margin: 1vh;
+    width: 12vw;
+    padding: 10px;
+}
+
+.projects-something-else {
+    flex: 1 0 auto;
+    border: 5px solid darkslategrey;
+    margin: 1vh;
+    padding: 10px;
+}
+
+.note-list {
+    overflow: auto;
+    margin: 1vh 1vh 1vh;
+    border: 5px solid blue;
+    padding: 10px;
+    width: 12vw;
+    flex: 0 0 auto;
+}
+
+.note-content {
+    display: flex;
+    margin: 1vh 1vh 1vh;
+    border: 5px solid black;
+    padding: 10px;
+    flex: 1 0 auto;
+    flex-direction: row;
+}
+
+.note-text-container {
+    display: flex;
+    margin: 1vh 1vh 1vh;
+    border: 5px solid magenta;
+    padding: 10px;
+    flex: 0 0 auto;
+    flex-direction: column;
+}
+
+.video-container {
+    display: flex;
+    margin: 1vh 1vh 1vh;
+    border: 5px solid darkturquoise;
+    padding: 10px;
+    flex: 0 0 auto;
+    flex-direction: column;
+}
+
+.video-player {
+    height: 360px;
+    width: 640px;
+
+    padding: 10px;
+    border: 5px solid green;
+}

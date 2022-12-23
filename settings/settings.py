@@ -40,12 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     'drf_yasg',
     #
     'Self_Help',
     #
     'rest_framework',
     'django_extensions',
+
 ]
 
 MIDDLEWARE = [
@@ -145,7 +147,9 @@ LOCALE_PATHS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'static/Self_Help/'
+STATICFILES_DIRS = [BASE_DIR / 'static/Self_Help']
+STATIC_ROOT = 'c:/static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

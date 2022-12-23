@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load static %}
+{% block title %} {{ project.title }} {% endblock %}
+
+{% block content %}
+    <div class="body-container-row">
+        <div class="note-list">
+            <ul class="no-style">
+                {% for note in notes %}
+                    <li>
+                        <a {% if note.is_done %} class="custom-button button-project-ready"
+                        {% else %} class="custom-button button-project-not-ready" {% endif %}
+                                                 href="{% url 'project_detail' %}?project_title={{ project.title }}&current_note_title={{ note.title }}">
+                            {{ note.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <button id="button_create_note_click" class="custom-button button-new-note">{% trans 'Create New Note' %}!
+            </button>
+            {% if user == project.host.get %}
+                <button id="button_edit_project_click" class="custom-button button-edit-project">
+                    {% trans 'Edit Project' %}</button>
+                <button id="button_delete_project_click" class="custom-button button-delete-project">
+                    {% trans 'Delete Project' %}</button>
+            {% endif %}
+
+        </div>
+
+        <div class="note-content">
+            <div class="note-text-container">
+                <form action="{% url 'project_detail' %}"
+                      method="POST">{% csrf_token %}
+                    <h3>{% render_field form_edit_note.new_note_title class="form_field" value=current_note.title %}</h3>
+                    <p>{% render_field form_edit_note.new_note_text class="form_field" rows="10" cols="60" value=current_note.text %}</p>
+                    <p>{% trans 'New YouTube URL:' %}
+                        {% render_field form_edit_note.new_vid_url class="form_field" %}</p>
+                    <input type="hidden" name="project_id" value="{{ project.id }}">
+                    <input type="hidden" name="note_id" value="{{ current_note.id }}">
+                    <input type="hidden" name="project_title" value="{{ project.title }}">
+                    <input type="submit" value="{% trans 'Save' %}" class="custom-button button-new-project">
+                </form>
+                {% if error_message is not None %}
+                    <script>
+                        alert('{{ error_message }}');
+                    </script>
+                {% endif %}
+                {% if current_note.is_done is False %}
+                    <a href="{% url 'note_is_done' %}?project_title={{ project.title }}&note_id={{ current_note.id }}"
+                       class="custom-button button-mark-ready">{% trans 'Mark Note as performed' %}</a>
+                {% endif %}
+                {% if current_note.is_done is True %}
+                    <a href="{% url 'note_is_not_done' %}?project_title={{ project.title }}&note_id={{ current_note.id }}"
+                       class="custom-button button-mark-not-ready">{% trans 'Mark Note as unperformed' %}</a>
+                {% endif %}
+
+                {% if current_note is not None %}
+                    <button id="button_delete_note_click" class="custom-button button-delete-project">
+                        {% trans 'Delete Note' %}</button>
+                {% endif %}
+            </div>
+            <div class="video-container">
+                <div id="player" class="video-player"></div>
+                {% if current_note.vid_id is not None %}
+                    <button onclick="destroyPlayer(); playThisVideo('{{ current_note.vid_id }}')"
+                            class="custom-button button-play-video">Press me
+                    </button>
+                {% endif %}
+                <script id="player-script" src="{% static 'js/yt_player.js' %}">
+                </script>
+            </div>
+        </div>
+        <div class="project-details-container">
+            <div id="chart-container" style="">
+                <canvas id="doughnut-chart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+            <script type="text/javascript">
+                var ctx = document.getElementById('doughnut-chart').getContext('2d');
+                var myChart1 = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: [{% for label_piece in labels %} '{{ label_piece }}', {% endfor %}],
+                        datasets: [{
+                            label: 'Gender',
+                            data: [{% for data_piece in data %} '{{ data_piece }}', {% endfor %}],
+                            backgroundColor: [
+                                'green',
+                                'red',
+                            ],
+
+                            borderColor: [
+                                'black',
+                                'black',
+                            ],
+
+                            borderWidth: 1
+                        }]
+                    },
+
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                })
+            </script>
+            <a href="{% url 'projects' %}"
+               class="custom-button button-go-projects"> {% trans 'Return to Projects' %}</a>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block down %}
+
+{% endblock %}
