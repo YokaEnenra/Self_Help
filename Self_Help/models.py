@@ -75,4 +75,3 @@ def update_note(sender, instance, created, update_fields, **kwargs):
         instance.title = InfoMessages.objects.get(name='new_note').full_text + instance.id
     if created or (update_fields is not None and instance.title in update_fields):
         instance.slug = slugify(rand_slug() + rand_title_chars(instance.title))
-

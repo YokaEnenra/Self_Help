@@ -1,4 +1,5 @@
-from django.contrib import messages
+from urllib.parse import urlparse, parse_qs
+
 from django.contrib.auth import get_user_model, login, authenticate, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse, JsonResponse
@@ -7,10 +8,6 @@ from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
-from django.views.generic import ListView, DeleteView, UpdateView
-from urllib.parse import urlparse, parse_qs
-
-from django.views.generic.detail import SingleObjectMixin
 
 from Self_Help.email import send
 from Self_Help.forms import NewProject, NewNote, EditProject, EditNote
@@ -122,7 +119,7 @@ class SignOut(View):
 class ProjectsPage(View):
     def get(self, request):
         form = NewProject()
-        projects = Project.objects.all().filter(users=request.user.id)
+        projects = Project.objects.all().filter(users=request.user.id).order_by('id')
         return render(request, "projects.html", context={
             'projects': projects,
             'form': form
@@ -137,7 +134,7 @@ def new_project_form(request, *args, **kwargs):
     if is_ajax:
         form = NewProject(request.POST)
         if form.is_valid():
-            projects = Project.objects.filter(users=request.user)
+            projects = Project.objects.filter(users=request.user).order_by('id')
             titles = [None] * len(projects)
             for i in range(len(projects)):
                 titles[i] = projects[i].title
@@ -201,26 +198,18 @@ def new_note_form(request, *args, **kwargs):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     form = NewNote()
     data = {}
-    user = request.user
 
     if is_ajax:
         form = NewNote(request.POST)
         if form.is_valid():
             data['note_title'] = form.cleaned_data.get('note_title')
             data['note_text'] = form.cleaned_data.get('note_text')
-            notes = Note.objects.filter(project_id=request.POST.get('project_id'))
+            notes = Note.objects.filter(project_id=request.POST.get('project_id')).order_by('id')
             vid_url = form.cleaned_data.get('vid_url')
             titles = [None] * len(notes)
             for i in range(len(notes)):
                 titles[i] = notes[i].title
-            k = 1
-            while True:
-                if data['note_title'] not in titles:
-                    break
-                if (k - 1) > 0:
-                    data['note_title'] = data['note_title'][:len(data['note_title']) - len(str(k - 1))]
-                data['note_title'] = data['note_title'] + str(k)
-                k += 1
+            data['note_title'] = get_unused_title(data['note_title'], titles)
             vid_id = None
             if vid_url:
                 vid_id = get_video_id(vid_url)
@@ -258,7 +247,7 @@ def switch_notes(current_note_title, notes):
     if notes:
         if current_note_title == 'None' or current_note_title is None or current_note_title == '':
             return notes.first()
-        return notes.filter(title=current_note_title).get()
+        return notes.filter(title=current_note_title).order_by('id').get()
     else:
         return None
 
@@ -307,7 +296,7 @@ class ProjectPage(View):
                             reverse_lazy('project_detail'),
                             request.POST.get('project_title'),
                             note.title))
-        notes = Note.objects.filter(project_id=request.POST.get('project_id'))
+        notes = Note.objects.filter(project_id=request.POST.get('project_id')).order_by('id')
         titles = [None] * len(notes)
         for i in range(len(notes)):
             titles[i] = notes[i].title
@@ -361,6 +350,17 @@ def delete_note(request):
     return JsonResponse(data)
 
 
+def get_unused_title(new_title, titles):
+    j = 1
+    while True:
+        if new_title not in titles:
+            return new_title
+        if (j - 1) > 0:
+            new_title = new_title[:len(new_title) - len(str(j - 1))]
+        new_title = new_title + str(j)
+        j += 1
+
+
 def edit_project(request):
     data = {}
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
@@ -369,20 +369,12 @@ def edit_project(request):
         form = EditProject(request.POST)
         if form.is_valid():
             project = Project.objects.filter(slug=request.POST.get('project_slug')).get()
-            projects = Project.objects.filter(users=request.user)
+            projects = Project.objects.filter(users=request.user).order_by('id')
             titles = [None] * len(projects)
             for i in range(len(projects)):
                 titles[i] = projects[i].title
             new_project_title = form.cleaned_data.get('new_project_title')
-            project.title = new_project_title
-            j = 1
-            while True:
-                if project.title not in titles:
-                    break
-                if (j - 1) > 0:
-                    project.title = project.title[:len(project.title) - len(str(j - 1))]
-                project.title = project.title + str(j)
-                j += 1
+            project.title = get_unused_title(new_project_title, titles)
             project.save()
             data['success'] = True
             data['new_project_title'] = project.title
@@ -414,7 +406,3 @@ def note_is_not_done(request):
     return redirect("{0}?project_title={1}&current_note_title={2}".format(reverse_lazy('project_detail'),
                                                                           request.GET.get('project_title'),
                                                                           note.title))
-
-
-
-
