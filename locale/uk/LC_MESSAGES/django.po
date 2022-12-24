@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-24 03:25+0200\n"
+"POT-Creation-Date: 2022-12-24 07:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -191,15 +191,17 @@ msgstr "Позначити нотатку як зроблену"
 msgid "Mark Note as unperformed"
 msgstr "Позначити нотатку як не зроблену"
 
+#: .\templates\project_detail.html:68
+msgid "Play Video"
+msgstr "Відтворити Відео"
+
 #: .\templates\project_detail.html:115
 msgid "Return to Projects"
 msgstr "Повернутись до Проектів"
 
 #: .\templates\project_detail.html:117
-#, fuzzy
-#| msgid "Return to Projects"
 msgid "Add User to Project"
-msgstr "Повернутись до Проектів"
+msgstr "Додати користувача до Проекту"
 
 #: .\templates\projects.html:20
 msgid "Create New Project"

@@ -5,9 +5,9 @@
 {% block title %} {% trans 'Self Help Project' %} {% endblock %}
 
 {% block content %}
-    <div class="body-container-row">
+    <div class="body-container-column">
         <h3>{% trans 'Sorry, but this function is not available for that moment, try it later' %}</h3>
-        <a href="{% url 'projects' %}"
+        <a href="{% url 'projects' %}" class="custom-button button-go-projects">{% trans 'Return to Projects' %}</a>
     </div>
 {% endblock %}
 

@@ -263,7 +263,6 @@ class ProjectPage(View):
         form_new_note = NewNote()
         form_project = EditProject()
         notes = Note.objects.all().filter(project_id=project.id).order_by('id')
-        print('\nnotes\n', notes, '\n')
         labels = [InfoMessages.objects.get(name='note_performed').full_text,
                   InfoMessages.objects.get(name='note_unperformed').full_text]
         done_notes = int(notes.filter(is_done=True).count())
