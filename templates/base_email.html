@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load i18n %}
+    {% load static %}
+    <style>
+        .wrapper {
+            padding: 10px;
+            margin-bottom: 1vh;
+            border: 3px solid black;
+            height: 95vh;
+        }
+
+        .footer-container {
+            margin-left: 1vh;
+            margin-right: 1vh;
+            padding: 15px 32px;
+            border: 5px solid yellow;
+            flex: 0 0 auto;
+        }
+
+        .body-container-column {
+            margin: 1vh;
+            border: 5px solid red;
+            height: 70vh;
+            padding: 10px;
+            flex: 1 0 auto;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="wrapper">
+{% block content %}{% endblock %}
+<footer class="footer-container">
+    {% block down %}{% endblock %}
+    {% trans 'Glory to Ukraine!' %}
+</footer>
+</body>
+
+</div>
+</html>

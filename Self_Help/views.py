@@ -67,8 +67,10 @@ class SignUp(View):
                           'uid': urlsafe_base64_encode(force_bytes(user.id)),
                           'token': default_token_generator.make_token(user)}),
                       'request': request})
-        return HttpResponse(f"{InfoMessages.objects.get(name='hi').full_text} {user.username}.\n"
-                            f"{InfoMessages.objects.get(name='acc_created').full_text} ")
+        hi_message = f"{InfoMessages.objects.get(name='hi').full_text} {user.username}.\n" \
+                     f" {InfoMessages.objects.get(name='acc_created').full_text} "
+        return render(request, 'show_important_message.html', context={
+            'important_message': hi_message})
 
 
 def verify_account(request, uid, token):
@@ -80,16 +82,20 @@ def verify_account(request, uid, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return HttpResponse(f"{InfoMessages.objects.get(name='hi').full_text} {user.username}!\n"
-                            f"{InfoMessages.objects.get(name='acc_activated').full_text}")
-    return HttpResponse(ErrorMessages.objects.get(name='inv_token').full_text)
+        hi_message = f"{InfoMessages.objects.get(name='hi').full_text} {user.username}!\n " \
+                     f"{InfoMessages.objects.get(name='acc_activated').full_text}"
+        return render(request, 'show_important_message.html', context={
+            'important_message': hi_message})
+    return render(request, 'show_important_message.html', context={
+        'important_message': ErrorMessages.objects.get(name='inv_token').full_text})
+
 
 
 class SignIn(View):
-    def get(self, request, short_error_message=None):
+    def get(self, request):
+        error_message = request.GET.get('error_message')
         return render(request, "signin.html", context={
-            'error_message': request.session.get('error_message'),
-            'short_error_message': short_error_message})
+            'error_message': error_message})
 
     def post(self, request):
         username = request.POST.get('username')
@@ -98,16 +104,16 @@ class SignIn(View):
         if user is not None and user.is_active:
             login(request, user)
             return redirect(reverse_lazy('home'))
+        elif user is None:
+            return redirect("{0}?error_message={1}".format(reverse_lazy('sign_in'),
+                                                           ErrorMessages.objects.get(name='wrong_signin').full_text))
         elif not user.is_active:
-            request.session['error_message'] = ErrorMessages.objects.get(name='acc_not_activ').full_text
-            return redirect(reverse_lazy(
-                'sign_in_with_error',
-                kwargs={'short_error_message': ErrorMessages.objects.get(name='acc_not_activ').name}))
+            return redirect("{0}?error_message={1}".format(reverse_lazy('sign_in'),
+                                                           ErrorMessages.objects.get(name='acc_not_activ').full_text))
         else:
-            request.session['error_message'] = ErrorMessages.objects.get(name='wrong_signin').full_text
-            return redirect(reverse_lazy(
-                'sign_in_with_error',
-                kwargs={'short_error_message': ErrorMessages.objects.get(name='wrong_signin').name}))
+            return redirect("{0}?error_message={1}".format(reverse_lazy('sign_in'),
+                                                           ErrorMessages.objects.get(
+                                                               name='unexpected_error').full_text))
 
 
 class SignOut(View):

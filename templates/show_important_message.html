@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% block title %} {% trans 'Self Help Project' %} {% endblock %}
+
+{% block content %}
+    <div class="body-container-column">
+        {{ important_message }}
+        <a href="{% url 'home' %}" class="custom-button button-go-home">{% trans 'Return to home page' %}</a>
+    </div>
+{% endblock %}
+
+{% block down %}{% endblock %}
