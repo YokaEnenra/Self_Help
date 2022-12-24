@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% block title %} {% trans 'Self Help Project' %} {% endblock %}
+
+{% block content %}
+    <div class="body-container-row">
+        <h3>{% trans 'Sorry, but this function is not available for that moment, try it later' %}</h3>
+        <a href="{% url 'projects' %}"
+    </div>
+{% endblock %}
+
+{% block down %}{% endblock %}

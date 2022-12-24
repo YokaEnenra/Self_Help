@@ -55,7 +55,6 @@ urlpatterns = [
     path('home/', HomePage.as_view(), name='home'),
     path('', StandardPage.as_view()),
     path('signup/', SignUp.as_view(), name='sign_up'),
-    path('signup', SignUp.as_view(), name='sign_up_with_error'),
     path('verify/<str:uid>/<str:token>', verify_account, name='verify_account'),
     path('signin', SignIn.as_view(), name='sign_in'),
     path('signout/', SignOut.as_view(), name='sign_out'),

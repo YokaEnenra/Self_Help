@@ -35,10 +35,9 @@ class HomePage(View):
 
 
 class SignUp(View):
-    def get(self, request, short_error_message=None):
+    def get(self, request):
         return render(request, "signup.html", context={
-            'error_message': request.session.get('error_message'),
-            'short_error_message': short_error_message})
+            'error_message': request.GET.get('error_message')})
 
     def post(self, request):
         username = request.POST.get('username')
@@ -46,14 +45,11 @@ class SignUp(View):
         password = request.POST.get('password')
         if USER_MODEL.objects.filter(username=username).exists():
             request.session['error_message'] = ErrorMessages.objects.get(name='wrong_username').full_text
-            return redirect(reverse_lazy(
-                'sign_up_with_error',
-                kwargs={'short_error_message': ErrorMessages.objects.get(name='wrong_username').name}))
+            return redirect("{0}?error_message={1}".format(reverse_lazy('sign_up'),
+                                                           ErrorMessages.objects.get(name='wrong_username').full_text))
         if USER_MODEL.objects.filter(email=email).exists():
-            request.session['error_message'] = ErrorMessages.objects.get(name='wrong_email').full_text
-            return redirect(reverse_lazy(
-                'sign_up_with_error',
-                kwargs={'short_error_message': ErrorMessages.objects.get(name='wrong_email').name}))
+            return redirect("{0}?error_message={1}".format(reverse_lazy('sign_up'),
+                                                           ErrorMessages.objects.get(name='wrong_email').full_text))
         user = USER_MODEL.objects.create_user(
             username=username,
             email=email,

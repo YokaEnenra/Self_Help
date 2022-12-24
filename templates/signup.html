@@ -11,6 +11,6 @@
             {% trans 'Password' %}:<input type="password" id="password" name="password" required>
             <input type="submit" value="{% trans 'Sign up' %}">
         </form>
-        <p>{% if error_message is not None and short_error_message is not None %}{{ error_message }}{% endif %}</p>
+        <p>{% if error_message is not None%}{{ error_message }}{% endif %}</p>
     </div>
 {% endblock %}
