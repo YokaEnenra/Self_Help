@@ -24,7 +24,7 @@ from drf_yasg import openapi
 
 from Self_Help.views import HomePage, StandardPage, verify_account, SignUp, SignIn, SignOut, \
     ProjectsPage, new_project_form, test_video, new_note_form, ProjectPage, delete_project, delete_note, edit_project, \
-    note_is_not_done, note_is_done
+    note_is_not_done, note_is_done, still_in_progress
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -67,6 +67,7 @@ urlpatterns = [
     path('form/edit_project', edit_project, name='edit_project'),
     path('note/ready', note_is_done, name='note_is_done'),
     path('note/not_ready', note_is_not_done, name='note_is_not_done'),
+    path('still_in_progres', still_in_progress, name='still_in_progress'),
     path('video/', test_video, name='video_test'),
     prefix_default_language=False,
 )

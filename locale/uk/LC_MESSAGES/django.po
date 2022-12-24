@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-24 00:00+0200\n"
+"POT-Creation-Date: 2022-12-24 03:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,13 +39,13 @@ msgstr "повний зміст повідомлення"
 
 #: .\settings\settings.py:137
 msgid "Ukrainian"
-msgstr "Україньска"
+msgstr "Українська"
 
 #: .\settings\settings.py:138
 msgid "English"
 msgstr "Англійська"
 
-#: .\templates\base.html:18
+#: .\templates\base.html:18 .\templates\base_email.html:39
 msgid "Glory to Ukraine!"
 msgstr "Слава Україні!"
 
@@ -54,7 +54,8 @@ msgid "Switch language"
 msgstr "Змінити мову"
 
 #: .\templates\homepage.html:3 .\templates\projects.html:5
-#: .\templates\signin_home.html:3
+#: .\templates\show_important_message.html:5 .\templates\signin_home.html:3
+#: .\templates\still_in_progress.html:5
 msgid "Self Help Project"
 msgstr "Проект Само Допомога"
 
@@ -194,11 +195,17 @@ msgstr "Позначити нотатку як не зроблену"
 msgid "Return to Projects"
 msgstr "Повернутись до Проектів"
 
+#: .\templates\project_detail.html:117
+#, fuzzy
+#| msgid "Return to Projects"
+msgid "Add User to Project"
+msgstr "Повернутись до Проектів"
+
 #: .\templates\projects.html:20
 msgid "Create New Project"
 msgstr "Створити Новий Проект"
 
-#: .\templates\projects.html:25
+#: .\templates\projects.html:25 .\templates\show_important_message.html:10
 msgid "Return to home page"
 msgstr "Повернутися на головну сторінку"
 
@@ -240,6 +247,10 @@ msgstr "Сторінка Реєстрації"
 #: .\templates\signup.html:10
 msgid "Email"
 msgstr "Пошта"
+
+#: .\templates\still_in_progress.html:9
+msgid "Sorry, but this function is not available for that moment, try it later"
+msgstr "Вибачте, але дана функція поки що недоступна, випробуйте її пізніше"
 
 #: .\templates\test.html:3
 msgid "Students Page"

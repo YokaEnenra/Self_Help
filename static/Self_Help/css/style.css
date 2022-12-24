@@ -104,6 +104,11 @@ ul.no-style {
     border: 2px solid peachpuff;
 }
 
+.button-add-user {
+     color: black;
+    border: 2px solid blueviolet;
+}
+
 .button-mark-ready {
     color: black;
     border: 2px solid green;

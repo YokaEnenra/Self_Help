@@ -408,3 +408,7 @@ def note_is_not_done(request):
     return redirect("{0}?project_title={1}&current_note_title={2}".format(reverse_lazy('project_detail'),
                                                                           request.GET.get('project_title'),
                                                                           note.title))
+
+
+def still_in_progress(request):
+    return render(request, 'still_in_progress.html')
