@@ -2,7 +2,7 @@ from urllib.parse import urlparse, parse_qs
 
 from django.contrib.auth import get_user_model, login, authenticate, logout
 from django.contrib.auth.tokens import default_token_generator
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes
@@ -84,7 +84,6 @@ def verify_account(request, uid, token):
             'important_message': hi_message})
     return render(request, 'show_important_message.html', context={
         'important_message': ErrorMessages.objects.get(name='inv_token').full_text})
-
 
 
 class SignIn(View):
@@ -174,13 +173,6 @@ def new_project_form(request, *args, **kwargs):
 
 
 def get_video_id(value):
-    """
-    Examples:
-    - http://youtu.be/SA2iWivDJiE
-    - http://www.youtube.com/watch?v=_oPAwA_Udwc&feature=feedu
-    - http://www.youtube.com/embed/SA2iWivDJiE
-    - http://www.youtube.com/v/SA2iWivDJiE?version=3&amp;hl=en_US
-    """
     query = urlparse(value)
     if query.hostname == 'youtu.be':
         return query.path[1:]
