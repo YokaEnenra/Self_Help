@@ -1,0 +1,26 @@
+{% extends "base_email.html" %}
+{% load i18n %}
+
+
+{% block content %}
+    <div class="body-container-column">
+        <h1>{{ subject }}</h1>
+        <p>{% trans 'Dear user,' %}<br>
+            {% trans 'We are pleased to inform you that you have been successfully enrolled in a new training course! ' %}
+            {% trans 'It is called: ' %}"{{ project_title }}"<br>
+            {% trans 'Another user has chosen to share this exciting course with you, ' %}
+            {% trans 'and we hope you will find it valuable and engaging.' %}<br>
+            {% trans 'Please note that the administration takes no responsibility for the content and duration ' %}
+            {% trans 'of this course. It is your responsibility to assess its suitability for your needs ' %}
+            {% trans 'and expectations. If you have any questions or uncertainties, we recommend reaching out to ' %}
+            {% trans 'the user who added you for additional information.' %}<br>
+            {% trans 'To directly access the course page, please use the following link:' %}<br>
+            {{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ link }}<br>
+            {% trans 'We hope you will enjoy the learning process and benefit from this course. Wishing you success ' %}
+            {% trans 'and fulfillment on your educational journey!' %}<br>
+            {% trans 'Best regards,' %}<br>
+            {% trans 'Self Help Project team' %}.</p>
+    </div>
+{% endblock %}
+
+{% block down %}{% endblock %}

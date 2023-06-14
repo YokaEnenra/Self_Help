@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
     {% load i18n %}
     {% load static %}
@@ -28,17 +28,35 @@
                 </option>
             {% endfor %}
         </select>
-        <input type="submit" value="{% trans 'Switch language' %}">
+        <input type="submit" class="custom-button button-switch-language" value="{% trans 'Switch language' %}">
     </form>
 </footer>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"
         integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+<script id="create-project" src="{% static 'js/create-project.js' %}">
+</script>
+<script id="edit-project" src="{% static 'js/edit-project.js' %}">
+</script>
+<script id="delete-project" src="{% static 'js/delete-project.js' %}">
+</script>
+<script id="create-note" src="{% static 'js/create-note.js' %}">
+</script>
+<script id="delete-note" src="{% static 'js/delete-note.js' %}">
+</script>
+<script id="js-translation" src="{% static 'js/translation.js' %}">
+</script>
+<script id="project-user-add" src="{% static 'js/add-user-to-project.js' %}">
+</script>
+<script id="project-user-delete" src="{% static 'js/delete-user-from-project.js' %}">
+</script>
+<script id="list-swap" src="{% static 'js/list-swap.js' %}">
+</script>
+<script type="text/javascript" id="draw-chart" src="{% static 'js/draw-chart.js' %}">
+</script>
 
-{% include 'js_scrypt.html' %}
 {% include 'popups.html' %}
 </body>
 
-</div>
 </html>

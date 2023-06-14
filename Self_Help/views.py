@@ -2,6 +2,8 @@ from urllib.parse import urlparse, parse_qs
 
 from django.contrib.auth import get_user_model, login, authenticate, logout
 from django.contrib.auth.tokens import default_token_generator
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -10,7 +12,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 
 from Self_Help.email import send
-from Self_Help.forms import NewProject, NewNote, EditProject, EditNote
+from Self_Help.forms import NewProject, NewNote, EditProject, EditNote, AddUserToProject
 from Self_Help.models import ErrorMessages, InfoMessages, Project, Note
 
 USER_MODEL = get_user_model()
@@ -120,9 +122,12 @@ class SignOut(View):
 class ProjectsPage(View):
     def get(self, request):
         form = NewProject()
-        projects = Project.objects.all().filter(users=request.user.id).order_by('id')
+        my_projects = Project.objects.all().filter(host=request.user.id).order_by('id')
+        other_projects = Project.objects.all().filter(users=request.user.id). \
+            filter(~Q(host=request.user.id)).order_by('id')
         return render(request, "projects.html", context={
-            'projects': projects,
+            'my_projects': my_projects,
+            'other_projects': other_projects,
             'form': form
         })
 
@@ -140,14 +145,7 @@ def new_project_form(request, *args, **kwargs):
             for i in range(len(projects)):
                 titles[i] = projects[i].title
             project_title = form.cleaned_data.get('project_title')
-            j = 1
-            while True:
-                if project_title not in titles:
-                    break
-                if (j - 1) > 0:
-                    project_title = project_title[:len(project_title) - len(str(j - 1))]
-                project_title = project_title + str(j)
-                j += 1
+            project_title = get_unused_title(project_title, titles)
             data['status'] = 'ok'
             data['success'] = True
             new_project = Project.objects.create(
@@ -192,13 +190,13 @@ def new_note_form(request, *args, **kwargs):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     form = NewNote()
     data = {}
-
     if is_ajax:
         form = NewNote(request.POST)
         if form.is_valid():
             data['note_title'] = form.cleaned_data.get('note_title')
             data['note_text'] = form.cleaned_data.get('note_text')
-            notes = Note.objects.filter(project_id=request.POST.get('project_id')).order_by('id')
+            project = Project.objects.all().filter(slug=request.POST.get('project_slug')).get()
+            notes = Note.objects.filter(project_id=project.id).order_by('id')
             vid_url = form.cleaned_data.get('vid_url')
             titles = [None] * len(notes)
             for i in range(len(notes)):
@@ -217,8 +215,8 @@ def new_note_form(request, *args, **kwargs):
                 text=data['note_text'],
                 vid_id=vid_id
             )
+            new_note.project_id.add(project.id)
             new_note.save()
-            new_note.project_id.add(request.POST.get('project_id'))
             data['status'] = 'ok'
             data['success'] = True
             return JsonResponse(data)
@@ -246,14 +244,16 @@ def switch_notes(current_note_title, notes):
         return None
 
 
-class ProjectPage(View):
+class ProjectDetailPage(View):
     def get(self, request, **kwargs):
-        project_title = request.GET.get('project_title')
+        project_slug = request.GET.get('project_slug')
         current_note_title = request.GET.get('current_note_title')
-        project = Project.objects.all().filter(users=request.user.id).filter(title=project_title).get()
+        project = Project.objects.all().filter(users=request.user.id, slug=project_slug).get()
+        users = project.users.filter(~Q(id=request.user.id))
         form_edit_note = EditNote()
         form_new_note = NewNote()
         form_project = EditProject()
+        form_add_user_to_project = AddUserToProject()
         notes = Note.objects.all().filter(project_id=project.id).order_by('id')
         labels = [InfoMessages.objects.get(name='note_performed').full_text,
                   InfoMessages.objects.get(name='note_unperformed').full_text]
@@ -265,9 +265,11 @@ class ProjectPage(View):
                    'form_new_note': form_new_note,
                    'form_edit_note': form_edit_note,
                    'form_project': form_project,
+                   'form_add_user_to_project': form_add_user_to_project,
                    'project': project,
                    'current_note': current_note,
-                   'user': request.user,
+                   'current_user': request.user,
+                   'added_users': users,
                    'labels': labels,
                    'data': data}
         if request.GET.get('vid_err') == 'true':
@@ -285,9 +287,9 @@ class ProjectPage(View):
             if new_vid_id is not None:
                 if len(new_vid_id) != 11:
                     return redirect(
-                        "{0}?project_title={1}&current_note_title={2}&vid_err=true".format(
+                        "{0}?project_slug={1}&current_note_title={2}&vid_err=true".format(
                             reverse_lazy('project_detail'),
-                            request.POST.get('project_title'),
+                            request.POST.get('project_slug'),
                             note.title))
         notes = Note.objects.filter(project_id=request.POST.get('project_id')).order_by('id')
         titles = [None] * len(notes)
@@ -308,9 +310,9 @@ class ProjectPage(View):
         if new_vid_id is not None:
             note.vid_id = new_vid_id
         note.save()
-        return redirect("{0}?project_title={1}&current_note_title={2}".format(reverse_lazy('project_detail'),
-                                                                              request.POST.get('project_title'),
-                                                                              note.title))
+        return redirect("{0}?project_slug={1}&current_note_title={2}".format(reverse_lazy('project_detail'),
+                                                                             request.POST.get('project_slug'),
+                                                                             note.title))
 
 
 def test_video(request):
@@ -372,6 +374,10 @@ def edit_project(request):
             data['success'] = True
             data['new_project_title'] = project.title
             return JsonResponse(data)
+        elif form.cleaned_data.get('new_project_title') is None:
+            data['success'] = False
+            data['status'] = ErrorMessages.objects.get(name='empty_proj_title').full_text
+            return JsonResponse(data)
         else:
             data['status'] = ErrorMessages.objects.get(name='unexpected_error').full_text
             data['success'] = False
@@ -387,19 +393,85 @@ def note_is_done(request):
     note = Note.objects.filter(id=request.GET.get('note_id')).get()
     note.is_done = True
     note.save()
-    return redirect("{0}?project_title={1}&current_note_title={2}".format(reverse_lazy('project_detail'),
-                                                                          request.GET.get('project_title'),
-                                                                          note.title))
+    return redirect("{0}?project_slug={1}&current_note_title={2}".format(reverse_lazy('project_detail'),
+                                                                         request.GET.get('project_slug'),
+                                                                         note.title))
 
 
 def note_is_not_done(request):
     note = Note.objects.filter(id=request.GET.get('note_id')).get()
     note.is_done = False
     note.save()
-    return redirect("{0}?project_title={1}&current_note_title={2}".format(reverse_lazy('project_detail'),
-                                                                          request.GET.get('project_title'),
-                                                                          note.title))
+    return redirect("{0}?project_slug={1}&current_note_title={2}".format(reverse_lazy('project_detail'),
+                                                                         request.GET.get('project_slug'),
+                                                                         note.title))
 
 
 def still_in_progress(request):
     return render(request, 'still_in_progress.html')
+
+
+def add_user_to_project(request):
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    form = AddUserToProject()
+    data = {}
+    if is_ajax:
+        form = AddUserToProject(request.POST)
+        if form.is_valid():
+            project = Project.objects.filter(slug=request.POST.get('project_slug')).get()
+            try:
+                user_being_added = USER_MODEL.objects.filter(email=request.POST.get('new_user_email')).get()
+            except ObjectDoesNotExist:
+                data['success'] = False
+                data['status'] = ErrorMessages.objects.get(name='no_such_user').full_text
+                return JsonResponse(data)
+            user_being_added_projects = Project.objects.filter(users=user_being_added).order_by('id')
+            if user_being_added in user_being_added_projects:
+                data['success'] = False
+                data['status'] = ErrorMessages.objects.get(name='user_already_in').full_text
+                return JsonResponse(data)
+            project.users.add(user_being_added)
+            project.save()
+            send(subject=InfoMessages.objects.get(name='added_to_project').full_text,
+                 to_email=user_being_added.email,
+                 template_name='added_to_project_email.html',
+                 context={'subject': f"{InfoMessages.objects.get(name='hi').full_text} {user_being_added.username}.",
+                          'link': f"{reverse_lazy('project_detail')}?project_slug={project.slug}",
+                          'project_title': project.title,
+                          'request': request})
+            data['success'] = True
+            return JsonResponse(data)
+        elif form.cleaned_data.get('new_user_email') is None:
+            data['success'] = False
+            data['status'] = ErrorMessages.objects.get(name='empty_user_email').full_text
+            return JsonResponse(data)
+        else:
+            data['status'] = ErrorMessages.objects.get(name='unexpected_error').full_text
+            data['success'] = False
+            return JsonResponse(data)
+    else:
+        context = {
+            'form': form
+        }
+        return render(request, 'project_detail.html', context)
+
+
+def delete_user_from_project(request):
+    data = {}
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    if is_ajax:
+        project = Project.objects.filter(slug=request.POST.get('project_slug')).get()
+        user_being_removed = project.users.filter(email=request.POST.get('user_email')).get()
+        project.users.remove(user_being_removed)
+        project.save()
+        send(subject=InfoMessages.objects.get(name='deleted_from_project').full_text,
+             to_email=user_being_removed.email,
+             template_name='deleted_from_project_email.html',
+             context={'subject': f"{InfoMessages.objects.get(name='hi').full_text} {user_being_removed.username}.",
+                      'project_title': project.title,
+                      'request': request})
+        data['success'] = True
+        return JsonResponse(data)
+    data['status'] = ErrorMessages.objects.get(name='unexpected_error').full_text
+    data['success'] = False
+    return JsonResponse(data)

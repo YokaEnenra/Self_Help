@@ -1,0 +1,21 @@
+{% extends "base_email.html" %}
+{% load i18n %}
+
+
+{% block content %}
+    <div class="body-container-column">
+        <h1>{{ subject }}</h1>
+        <p>{% trans 'Dear user,' %}<br>
+            {% trans 'We regret to inform you that you have been removed from the ' %} "{{ project_title }}"
+            {% trans 'training course. The user who added you to the course has made the decision to exclude you.' %}<br>
+            {% trans 'If you have any questions regarding the reason for this decision or if you require further ' %}
+            {% trans 'information, please reach out directly to the user who is the owner of the course.' %}<br>
+            {% trans 'We understand that this may be disappointing, but we appreciate your interest in the course. ' %}
+            {% trans 'We wish you success in your learning journey and hope you find other exciting opportunities ' %}
+            {% trans 'for personal growth.' %}<br>
+            {% trans 'Best regards,' %}<br>
+            {% trans 'Self Help Project team' %}</p>
+    </div>
+{% endblock %}
+
+{% block down %}{% endblock %}

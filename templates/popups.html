@@ -2,9 +2,19 @@
 {% load static %}
 {% load widget_tweaks %}
 
+<input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+<input type="hidden" id="language" value="{% trans 'en' %}">
+<input type="hidden" id="project-slug" value="{{ project.slug }}">
+<input type="hidden" id="all-projects-page-url" value="{% url 'projects' %}">
+<input type="hidden" id="notes-project-url"
+       value="{% url 'project_detail' %}?project_slug={{ project.slug }}&current_note_title=None">
+<input type="hidden" id="note-slug" value="{{ current_note.slug }}">
+<input type="hidden" id="notes-project-title" value="{{ project.title }}">
+
+
 <div id="click_create_note_modal" style="display:none;">
     <form id="click_create_note_confirm" action="{% url 'new_note_form' %}" method="POST">
-        <p>{% trans 'Create new note for ' %}{{ project.title }}{% trans ' project' %}</p>
+        <p>{% trans 'Create new note for' %} "{{ project.title }}" {% trans 'project' %}</p>
         {% csrf_token %}
         <div class="click-create-note-label">
             {% trans 'Note Title' %}</div>
@@ -16,35 +26,10 @@
             {% trans 'Note YouTube Video URL(optional can be defined later or never)' %}</div>
         {% render_field form_new_note.vid_url class="form_field" %}
 
+        <input type="hidden" id="create-note-url" value="{% url 'new_note_form' %}">
     </form>
     <div id="message-for-note" class="success_message"></div>
 </div>
-
-<div id="click_delete_project_modal" style="display:none;">
-    <form id="click_delete_project_confirm" method="POST" action="{% url 'delete_project' %}">
-        {% csrf_token %}
-        <p>{% trans 'Are you sure you want to delete ' %}{{ project.title }}{% trans ' project' %}?</p>
-    </form>
-    <div id="message-for-note" class="success_message"></div>
-</div>
-
-<div id="click_edit_project_modal" style="display:none;">
-    <form id="click_edit_project_confirm" method="POST" action="{% url 'edit_project' %}">
-        {% csrf_token %}
-        <p>{% trans 'Select new title for ' %}{{ project.title }}{% trans ' project' %}</p>
-        {% render_field form_project.new_project_title class="form_field" value=project.title %}
-    </form>
-    <div id="message-for-edit-prj" class="success_message"></div>
-</div>
-
-<div id="click_delete_note_modal" style="display:none;">
-    <form id="click_create_note_confirm" method="POST" action="{% url 'delete_project' %}">
-        {% csrf_token %}
-        <p>{% trans 'Are you sure you want to delete ' %}{{ current_note.title }}{% trans ' note' %}?</p>
-    </form>
-    <div id="message-for-note" class="success_message"></div>
-</div>
-
 
 <div id="click_create_project_modal" style="display:none;">
     <form id="click_create_project_confirm" action="{% url 'new_project_form' %}" method="POST">
@@ -52,6 +37,65 @@
         {% csrf_token %}
         <div class="click-create-project-label">{% trans 'Project Title' %}</div>
         {% render_field form.project_title class="form_field" %}
+
+        <input type="hidden" id="create-project-url" value="{% url 'new_project_form' %}">
     </form>
     <div id="message-for-project" class="success_message"></div>
 </div>
+
+<div id="click_delete_project_modal" style="display:none;">
+    <form id="click_delete_project_confirm" method="POST" action="{% url 'delete_project' %}">
+        {% csrf_token %}
+        <p>{% trans 'Are you sure you want to delete' %} "{{ project.title }}" {% trans 'project' %}?</p>
+
+        <input type="hidden" id="delete-project-url" value="{% url 'delete_project' %}">
+
+
+    </form>
+    <div id="message-for-note" class="success_message"></div>
+</div>
+
+<div id="click_delete_note_modal" style="display:none;">
+    <form id="click_create_note_confirm" method="POST" action="{% url 'delete_project' %}">
+        {% csrf_token %}
+        <p>{% trans 'Are you sure you want to delete' %} "{{ current_note.title }}" {% trans 'note' %}?</p>
+
+        <input type="hidden" id="delete-note-url" value="{% url 'delete_note' %}">
+        <input type="hidden" id="no-project-title-url" value="{% url 'projects' %}">
+
+    </form>
+    <div id="message-for-note" class="success_message"></div>
+</div>
+
+<div id="click_edit_project_modal" style="display:none;">
+    <form id="click_edit_project_confirm" method="POST" action="{% url 'edit_project' %}">
+        {% csrf_token %}
+        <p>{% trans 'Select new title for' %} "{{ project.title }}" {% trans 'project' %}</p>
+        {% render_field form_project.new_project_title class="form_field" value=project.title %}
+
+        <input type="hidden" id="edit-project-url" value="{% url 'edit_project' %}">
+    </form>
+    <div id="message-for-edit-prj" class="success_message"></div>
+</div>
+
+<div id="click_add_user_to_project_modal" style="display:none;">
+    <form id="click_add_user_to_project_confirm" method="POST" action="{% url 'add_user_to_project' %}">
+        {% csrf_token %}
+        <p>{% trans 'Enter the email address of the user you want to add to the' %} "{{ project.title }}"
+            {% trans 'project' %}</p>
+        {% render_field form_add_user_to_project.new_user_email class="form_field" %}
+
+        <input type="hidden" id="add-user-to-project-url" value="{% url 'add_user_to_project' %}">
+    </form>
+</div>
+
+<div id="click_delete_user_from_project_modal" class="popup" style="display: none;">
+    <p id="delete_user_from_project_message"></p>
+
+    <input type="hidden" id="delete-user-from-project-url" value="{% url 'delete_user_from_project' %}">
+</div>
+
+
+
+
+

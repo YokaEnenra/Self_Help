@@ -6,24 +6,31 @@
 
 {% block content %}
     <div class="body-container-row">
-        <div class="note-list">
-            <ul class="no-style">
-                {% for note in notes %}
-                    <li>
-                        <a {% if note.is_done %} class="custom-button button-project-ready"
-                        {% else %} class="custom-button button-project-not-ready" {% endif %}
-                                                 href="{% url 'project_detail' %}?project_title={{ project.title }}&current_note_title={{ note.title }}">
-                            {{ note.title }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-            <button id="button_create_note_click" class="custom-button button-new-note">{% trans 'Create New Note' %}!
+        <div class="project-management-panel">
+            <div class="note-list">
+                <ul class="no-style">
+                    {% for note in notes %}
+                        <li>
+                            <a {% if note.is_done %}
+                                class="custom-button button-ready-not-ready button-with-word-break button-note-ready"
+                            {% else %}
+                                class="custom-button button-ready-not-ready button-with-word-break button-note-not-ready" {% endif %}
+                                href="{% url 'project_detail' %}?project_slug={{ project.slug }}&current_note_title={{ note.title }}">
+                                {{ note.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <button id="button_create_note_click"
+                    class="custom-button buttons-in-project-management-panel button-new-note">{% trans 'Create New Note' %}!
             </button>
-            {% if user == project.host.get %}
-                <button id="button_edit_project_click" class="custom-button button-edit-project">
+            {% if current_user == project.host.get %}
+                <button id="button_edit_project_click"
+                        class="custom-button buttons-in-project-management-panel button-edit-project">
                     {% trans 'Edit Project' %}</button>
-                <button id="button_delete_project_click" class="custom-button button-delete-project">
+                <button id="button_delete_project_click"
+                        class="custom-button buttons-in-project-management-panel button-delete-project">
                     {% trans 'Delete Project' %}</button>
             {% endif %}
 
@@ -31,34 +38,37 @@
 
         <div class="note-content">
             <div class="note-text-container">
-                <form action="{% url 'project_detail' %}"
-                      method="POST">{% csrf_token %}
-                    <h3>{% render_field form_edit_note.new_note_title class="form_field" value=current_note.title %}</h3>
-                    <p><textarea id="id_new_note_text" name="new_note_text" rows="10" cols="60">{{ current_note.text }}</textarea></p>
-                    <p>{% trans 'New YouTube URL:' %}
-                        {% render_field form_edit_note.new_vid_url class="form_field" %}</p>
-                    <input type="hidden" name="project_id" value="{{ project.id }}">
-                    <input type="hidden" name="note_id" value="{{ current_note.id }}">
-                    <input type="hidden" name="project_title" value="{{ project.title }}">
-                    <input type="submit" value="{% trans 'Save' %}" class="custom-button button-new-project">
-                </form>
-                {% if error_message is not None %}
-                    <script>
-                        alert('{{ error_message }}');
-                    </script>
-                {% endif %}
-                {% if current_note.is_done is False %}
-                    <a href="{% url 'note_is_done' %}?project_title={{ project.title }}&note_id={{ current_note.id }}"
-                       class="custom-button button-mark-ready">{% trans 'Mark Note as performed' %}</a>
-                {% endif %}
-                {% if current_note.is_done is True %}
-                    <a href="{% url 'note_is_not_done' %}?project_title={{ project.title }}&note_id={{ current_note.id }}"
-                       class="custom-button button-mark-not-ready">{% trans 'Mark Note as unperformed' %}</a>
-                {% endif %}
+                {% if current_note.title is not None %}
+                    <form action="{% url 'project_detail' %}"
+                          method="POST">{% csrf_token %}
+                        <h3>{% render_field form_edit_note.new_note_title class="form_field" value=current_note.title %}</h3>
+                        <p><textarea id="id_new_note_text" name="new_note_text" rows="10"
+                                     cols="60">{{ current_note.text }}</textarea></p>
+                        <p>{% trans 'New YouTube URL:' %}
+                            {% render_field form_edit_note.new_vid_url class="form_field" %}</p>
+                        <input type="hidden" name="project_id" value="{{ project.id }}">
+                        <input type="hidden" name="note_id" value="{{ current_note.id }}">
+                        <input type="hidden" name="project_slug" value="{{ project.slug }}">
+                        <input type="submit" value="{% trans 'Save' %}" class="custom-button button-new-project">
+                    </form>
+                    {% if error_message is not None %}
+                        <script>
+                            alert('{{ error_message }}');
+                        </script>
+                    {% endif %}
+                    {% if current_note.is_done is False %}
+                        <a href="{% url 'note_is_done' %}?project_slug={{ project.slug }}&note_id={{ current_note.id }}"
+                           class="custom-button button-mark-ready">{% trans 'Mark Note as performed' %}</a>
+                    {% endif %}
+                    {% if current_note.is_done is True %}
+                        <a href="{% url 'note_is_not_done' %}?project_slug={{ project.slug }}&note_id={{ current_note.id }}"
+                           class="custom-button button-mark-not-ready">{% trans 'Mark Note as unperformed' %}</a>
+                    {% endif %}
 
-                {% if current_note is not None %}
-                    <button id="button_delete_note_click" class="custom-button button-delete-project">
-                        {% trans 'Delete Note' %}</button>
+                    {% if current_note is not None %}
+                        <button id="button_delete_note_click" class="custom-button button-delete-note">
+                            {% trans 'Delete Note' %}</button>
+                    {% endif %}
                 {% endif %}
             </div>
             <div class="video-container">
@@ -68,7 +78,7 @@
                             class="custom-button button-play-video">{% trans 'Play Video' %}
                     </button>
                 {% endif %}
-                <script id="player-script" src="{% static 'js/yt_player.js' %}">
+                <script id="player-script" src="{% static 'js/yt-player.js' %}">
                 </script>
             </div>
         </div>
@@ -77,7 +87,7 @@
                 <canvas id="doughnut-chart"></canvas>
             </div>
             <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-            <script type="text/javascript">
+            <script type="text/javascript" id="doughnut-chart">
                 var ctx = document.getElementById('doughnut-chart').getContext('2d');
                 var myChart1 = new Chart(ctx, {
                     type: 'doughnut',
@@ -88,7 +98,7 @@
                             data: [{% for data_piece in data %} '{{ data_piece }}', {% endfor %}],
                             backgroundColor: [
                                 'green',
-                                'red',
+                                'yellow',
                             ],
 
                             borderColor: [
@@ -111,10 +121,24 @@
                     }
                 })
             </script>
+
+            <div class="users-with-access-container">
+                {% if current_user == project.host.get %}
+                    {% for user in added_users %}
+                        <button class="custom-button button-with-word-break button-delete-added-user"
+                                data-email="{{ user.email }}">{{ user.email }}</button>
+                    {% endfor %}
+
+                {% else %}
+                    <button class="custom-button button-with-word-break button-delete-added-user">{{ user.email }}</button>
+                {% endif %}
+            </div>
+            {% if current_user == project.host.get %}
+                <button id="button_add_user_to_project"
+                        class="custom-button button-add-user">{% trans 'Add User to Project' %}</button>
+            {% endif %}
             <a href="{% url 'projects' %}"
                class="custom-button button-go-projects"> {% trans 'Return to Projects' %}</a>
-            <a href="{% url 'still_in_progress' %}"
-               class="custom-button button-add-user">{% trans 'Add User to Project' %}</a>
         </div>
 
     </div>

@@ -6,21 +6,34 @@
 
 {% block content %}
     <div class="body-container-row">
-        <div class="projects-list">
-            <ul class="no-style">
-                {% for project in projects %}
-                    <li>
-                        <a href="{% url 'project_detail' %}?project_title={{ project.title }}&current_note_title=None"
-                           class="custom-button button-to-project">{{ project.title }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-
+        <div class="project-management-panel">
+            <button id="button_show_first_list" class="custom-button button-select-list">
+                {% trans 'My Projects' %}</button>
+            <button id="button_show_second_list" class="custom-button button-select-list">
+                {% trans 'Other Projects' %}</button>
+            <div class="projects-list">
+                <ul class="no-style">
+                    {% for project in my_projects %}
+                        <li>
+                            <a href="{% url 'project_detail' %}?project_slug={{ project.slug }}&current_note_title=None"
+                               class="custom-button button-with-word-break button-to-project">{{ project.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <ul class="no-style">
+                    {% for project in other_projects %}
+                        <li>
+                            <a href="{% url 'project_detail' %}?project_slug={{ project.slug }}&current_note_title=None"
+                               class="custom-button button-with-word-break button-to-project">{{ project.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
             <button id="button_create_project_click"
                     class="custom-button button-new-project">{% trans 'Create New Project' %}!
             </button>
-
         </div>
+
         <div class="projects-something-else">
             <a href="{% url 'home' %}" class="custom-button button-go-home">{% trans 'Return to home page' %}</a>
         </div>

@@ -20,9 +20,11 @@ input[type=submit] {
 ul.no-style {
     list-style-type: none;
     margin-left: -2vw;
+    text-align: center;
 }
 
 .custom-button {
+
     background-color: white;
     border: none;
     color: white;
@@ -35,36 +37,57 @@ ul.no-style {
     cursor: pointer;
     border-radius: 5px;
     width: auto;
-    max-width: 10vw;
+    max-width: 15vw;
 }
 
 .button-sign-up {
     color: black;
     border: 2px solid blue;
+    width: 5.5vw;
+}
+
+.button-select-list {
+    color: black;
+    border: 2px solid orange;
 }
 
 .button-sign-in {
     color: black;
     border: 2px solid green;
+    width: 5.5vw;
 }
 
 .button-sign-out {
     color: black;
     border: 2px solid red;
+    width: 5.5vw;
 }
 
 .button-to-project {
     color: black;
     border: 2px solid yellow;
+    width: 5.5vw;
 }
 
-.button-project-not-ready {
+.button-with-word-break {
+    word-break: break-all;
+}
+
+.button-ready-not-ready {
+    width: 5vw;
     color: black;
+}
+
+.buttons-in-project-management-panel {
+    width: 11.5vw;
+    color: black;
+}
+
+.button-note-not-ready {
     border: 2px solid yellow;
 }
 
-.button-project-ready {
-    color: black;
+.button-note-ready {
     border: 2px solid green;
 }
 
@@ -74,18 +97,22 @@ ul.no-style {
 }
 
 .button-edit-project {
-    color: black;
     border: 2px solid black;
 }
 
 .button-new-note {
-    color: black;
     border: 2px solid teal;
 }
 
 .button-delete-project {
     color: black;
     border: 2px solid red;
+}
+
+.button-delete-note {
+    color: black;
+    border: 2px solid red;
+    width: 10vw;
 }
 
 .button-play-video {
@@ -97,31 +124,40 @@ ul.no-style {
 .button-go-home {
     color: black;
     border: 2px solid peachpuff;
+    width: 5.5vw;
 }
 
 .button-go-projects {
     color: black;
     border: 2px solid peachpuff;
+    width: 8vw;
 }
 
 .button-add-user {
-     color: black;
+    color: black;
     border: 2px solid blueviolet;
 }
 
 .button-mark-ready {
     color: black;
     border: 2px solid green;
+    width: 15vw;
 }
 
 .button-mark-not-ready {
     color: black;
+    border: 2px solid yellow;
+    width: 15vw;
+}
+
+.button-switch-language {
+    color: black;
     border: 2px solid red;
 }
 
-.button-switch_language {
+.button-delete-added-user {
     color: black;
-    border: 2px solid red;
+    border: 2px solid orange;
 }
 
 .wrapper {
@@ -165,6 +201,8 @@ ul.no-style {
     padding: 10px;
     width: 12vw;
     flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .no-scroll {
@@ -177,9 +215,10 @@ ul.no-style {
 .projects-list {
     flex: 0 0 auto;
     overflow: auto;
-    border: 5px solid darkorange;
+    border: 5px solid lightblue;
     margin: 1vh;
-    width: 12vw;
+    width: 10vw;
+    height: 43vh;
     padding: 10px;
 }
 
@@ -190,12 +229,22 @@ ul.no-style {
     padding: 10px;
 }
 
-.note-list {
-    overflow: auto;
+.project-management-panel {
+
     margin: 1vh 1vh 1vh;
     border: 5px solid blue;
     padding: 10px;
     width: 12vw;
+    flex: 0 0 auto;
+}
+
+.note-list {
+    overflow: auto;
+    margin: 1vh 1vh 1vh;
+    border: 5px solid lightblue;
+    padding: 10px;
+    width: 10vw;
+    height: 43vh;
     flex: 0 0 auto;
 }
 
@@ -212,6 +261,7 @@ ul.no-style {
     display: flex;
     margin: 1vh 1vh 1vh;
     border: 5px solid magenta;
+    width: 463px;
     padding: 10px;
     flex: 0 0 auto;
     flex-direction: column;
@@ -223,6 +273,16 @@ ul.no-style {
     border: 5px solid darkturquoise;
     padding: 10px;
     flex: 0 0 auto;
+    flex-direction: column;
+}
+
+.users-with-access-container {
+    overflow: auto;
+    display: flex;
+    margin: 1vh 1vh 1vh;
+    border: 5px solid purple;
+    padding: 10px;
+    flex: 1 0 auto;
     flex-direction: column;
 }
 

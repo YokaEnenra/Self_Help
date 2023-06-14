@@ -23,8 +23,9 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 from Self_Help.views import HomePage, StandardPage, verify_account, SignUp, SignIn, SignOut, \
-    ProjectsPage, new_project_form, test_video, new_note_form, ProjectPage, delete_project, delete_note, edit_project, \
-    note_is_not_done, note_is_done, still_in_progress
+    ProjectsPage, new_project_form, test_video, new_note_form, ProjectDetailPage, delete_project, delete_note, \
+    edit_project, \
+    note_is_not_done, note_is_done, still_in_progress, add_user_to_project, delete_user_from_project
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -59,7 +60,7 @@ urlpatterns = [
     path('signin', SignIn.as_view(), name='sign_in'),
     path('signout/', SignOut.as_view(), name='sign_out'),
     path('projects/', ProjectsPage.as_view(), name='projects'),
-    path('project/', ProjectPage.as_view(), name='project_detail'),
+    path('project/', ProjectDetailPage.as_view(), name='project_detail'),
     path('form/project', new_project_form, name='new_project_form'),
     path('form/note', new_note_form, name='new_note_form'),
     path('form/delete_project', delete_project, name='delete_project'),
@@ -69,7 +70,10 @@ urlpatterns = [
     path('note/not_ready', note_is_not_done, name='note_is_not_done'),
     path('still_in_progres', still_in_progress, name='still_in_progress'),
     path('video/', test_video, name='video_test'),
+    path('form/project/add_user', add_user_to_project, name="add_user_to_project"),
+    path('form/project/delete_user', delete_user_from_project, name="delete_user_from_project"),
     prefix_default_language=False,
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

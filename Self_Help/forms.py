@@ -19,3 +19,7 @@ class EditNote(forms.Form):
     new_note_title = forms.CharField(label="note_title", required=True, max_length=100)
     new_note_text = forms.CharField(label="note_text", required=False, max_length=1000, widget=forms.Textarea)
     new_vid_url = forms.CharField(label="note_title", max_length=200, required=False)
+
+
+class AddUserToProject(forms.Form):
+    new_user_email = forms.CharField(label="user_email", max_length=200, required=True)

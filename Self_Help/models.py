@@ -62,7 +62,7 @@ def update_project(sender, instance, created, update_fields, **kwargs):
 
 class Note(models.Model):
     title = models.CharField(null=True, max_length=100)
-    text = models.CharField(max_length=1000, null=True)
+    text = models.CharField(max_length=100000, null=True)
     project_id = models.ManyToManyField(Project)
     vid_id = models.CharField(null=True, max_length=50)
     is_done = models.BooleanField(default=False)
